@@ -1,4 +1,4 @@
-package com.nileshpatil.pojos.ResponsePOJO;
+package com.nileshpatil.pojos.ResponsePOJO.restfullbooker;
 
 import com.nileshpatil.pojos.RequestPOJO.restfullbooker.Booking;
 

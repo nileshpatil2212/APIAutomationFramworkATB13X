@@ -1,4 +1,4 @@
-package com.nileshpatil.pojos.RequestPOJO.restfullbooker;
+package com.nileshpatil.pojos.ResponsePOJO.restfullbooker;
 
 public class TokenResponse {
 

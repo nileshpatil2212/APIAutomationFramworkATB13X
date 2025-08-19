@@ -1,4 +1,4 @@
-package com.nileshpatil.pojos.ResponsePOJO;
+package com.nileshpatil.pojos.ResponsePOJO.vwo;
 
 public class InvalidLoginResponse {
 

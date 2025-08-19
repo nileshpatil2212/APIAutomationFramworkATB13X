@@ -1,4 +1,4 @@
-package com.nileshpatil.pojos.RequestPOJO;
+package com.nileshpatil.pojos.RequestPOJO.restfullbooker;
 
 public class Booking {
 

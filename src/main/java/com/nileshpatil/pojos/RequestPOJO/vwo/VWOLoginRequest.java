@@ -1,4 +1,4 @@
-package com.nileshpatil.pojos.RequestPOJO;
+package com.nileshpatil.pojos.RequestPOJO.vwo;
 
 
 public class VWOLoginRequest {
