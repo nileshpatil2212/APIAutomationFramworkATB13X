@@ -1,10 +1,13 @@
-package com.nileshpatil.modules;
+package com.nileshpatil.modules.restfulbooker;
 
 import com.github.javafaker.Faker;
 import com.google.gson.Gson;
+import com.nileshpatil.pojos.RequestPOJO.restfullbooker.Auth;
 import com.nileshpatil.pojos.RequestPOJO.restfullbooker.Booking;
 import com.nileshpatil.pojos.RequestPOJO.restfullbooker.Bookingdates;
 import com.nileshpatil.pojos.ResponsePOJO.restfullbooker.BookingResponse;
+import com.nileshpatil.pojos.ResponsePOJO.restfullbooker.InvalidTokenResponse;
+import com.nileshpatil.pojos.ResponsePOJO.restfullbooker.TokenResponse;
 
 public class PayloadManager {
 
@@ -16,7 +19,7 @@ public class PayloadManager {
     // Convert the Java Object into the JSON String to use as Payload.
     // Serialization
 
-    public String createPayloadBookingAsString(){
+    public String createPayloadBookingAsString() {
 
         Booking booking = new Booking();
         booking.setFirstname("Nilesh");
@@ -31,6 +34,7 @@ public class PayloadManager {
         booking.setAdditionalneeds("Breakfast");
 
         System.out.println(booking);
+        gson = new Gson();
         return gson.toJson(booking);
 
 //        {
@@ -48,7 +52,7 @@ public class PayloadManager {
 
     }
 
-    public String createPayloadBookingAsStringWrongBody(){
+    public String createPayloadBookingAsStringWrongBody() {
         Booking booking = new Booking();
         booking.setFirstname("会意; 會意");
         booking.setLastname("会意; 會意");
@@ -69,14 +73,14 @@ public class PayloadManager {
         return jsonStringBooking;
     }
 
-    public String createPayloadBookingFakerJS(){
+    public String createPayloadBookingFakerJS() {
         //  This option is you dynamically generate the first name,
         //  last name and other variables.
         faker = new Faker();
         Booking booking = new Booking();
         booking.setFirstname(faker.name().firstName());
         booking.setLastname(faker.name().lastName());
-        booking.setTotalprice(faker.random().nextInt(1,1000));
+        booking.setTotalprice(faker.random().nextInt(1, 1000));
         booking.setDepositpaid(faker.random().nextBoolean());
 
         Bookingdates bookingdates = new Bookingdates();
@@ -104,10 +108,51 @@ public class PayloadManager {
     // Convert the JSON String to Java Object so that we can verify response Body
     // DeSerialization
 
-    public BookingResponse bookingResponseJava(String responseString){
+    public BookingResponse bookingResponseJava(String responseString) {
 
         gson = new Gson();
-        BookingResponse bookingResponse = gson.fromJson(responseString,BookingResponse.class);
+        BookingResponse bookingResponse = gson.fromJson(responseString, BookingResponse.class);
         return bookingResponse;
+    }
+
+    public Booking getResponseFromJSON(String responseString) {
+
+        gson = new Gson();
+        Booking bookingResponse = gson.fromJson(responseString, Booking.class);
+        return bookingResponse;
+    }
+
+    // Serialization or deserialization of an object is not present.
+    // So we need to create.
+
+    // We convert the JSON string to the Java object for auth.
+    // {
+    //    "username" : "admin",
+    //    "password" : "password123"
+    //}
+
+
+    public String setAuthPayload() {
+        Auth auth = new Auth();
+        auth.setUsername("admin");
+        auth.setPassword("password123");
+        gson = new Gson();
+        String jsonPayloadString =gson.toJson(auth);
+        System.out.println("Payload set to the --> "+ jsonPayloadString);
+        return jsonPayloadString;
+    }
+
+    // DeSer ( JSON String -> Java Object
+    public String getTokenFromJSON(String tokenResponse){
+        gson = new Gson();
+        TokenResponse tokenResponse1 = gson.fromJson(tokenResponse, TokenResponse.class);
+        return tokenResponse1.getToken();
+    }
+
+
+    public String getInvalidResponse(String invalidTokenResponse){
+        gson = new Gson();
+        InvalidTokenResponse tokenResponse1 = gson.fromJson(invalidTokenResponse, InvalidTokenResponse.class);
+        return tokenResponse1.getReason();
     }
 }

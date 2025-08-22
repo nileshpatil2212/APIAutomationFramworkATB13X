@@ -3,17 +3,16 @@ package com.nileshpatil.base;
 
 import com.nileshpatil.asserts.AssertActions;
 import com.nileshpatil.endpoints.APIConstants;
-import com.nileshpatil.modules.PayloadManager;
+import com.nileshpatil.modules.restfulbooker.PayloadManager;
+import com.nileshpatil.modules.vwo.VWOPayloadManager;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
-import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 
 public class BaseTest {
@@ -30,6 +29,7 @@ public class BaseTest {
 
     public AssertActions assertActions;
     public PayloadManager payloadManager;
+    public VWOPayloadManager vwoPayloadManager;
     public JsonPath jsonPath;
 
     @BeforeTest
@@ -37,6 +37,7 @@ public class BaseTest {
 
         System.out.println("Starting the test");
         payloadManager = new PayloadManager();
+        vwoPayloadManager = new VWOPayloadManager();
         assertActions = new AssertActions();
 
 //        requestSpecification = RestAssured.given();
@@ -53,6 +54,19 @@ public class BaseTest {
     @AfterTest
     public void tearDown(){
         System.out.println("Finished the test");
+    }
+
+    public  String getToken(){
+        requestSpecification = RestAssured.given();
+        requestSpecification.baseUri(APIConstants.BASE_URL)
+                .basePath(APIConstants.AUTH_URL);
+        // Setting the payload
+        String payload = payloadManager.setAuthPayload();
+        // Get the Token
+        response = requestSpecification.contentType(ContentType.JSON).body(payload).when().post();
+        String token = payloadManager.getTokenFromJSON(response.asString());
+        return token;
+
     }
 
 }
